@@ -12,19 +12,21 @@ Currently Tested on FireFox 45, IE 11
 
 # Client Side Installation
 - Include the `Web/3skey.js` file into your webpage
-    ```
+   
+    ```html
     <script type="text/javascript" src="3skey.js"></script>
     ```
     
 - Include the applet tag
-    ```
+    
+    ```html
     <div style="visibility:hidden">
         <applet name="pdiApplet" code="com.swift.pdi.applet.TokenApplet" archive="pdiapplet.jar"> </applet>
     </div>
     ```
 - Initialize it and Sign
 
-    ```
+    ```html
      var token = new Token3Skey(document.pdiApplet);
 
         window.appletInitialized = function(pSlots){            
@@ -64,7 +66,7 @@ Currently Tested on FireFox 45, IE 11
 - Import the `Signing` namespace
 - Import the `Signing.Util` namespace if needed
 
-```
+```cs
 var toolkit = new Singing.Toolkit();
 byte[] file = new Signing.Util.File();
 
