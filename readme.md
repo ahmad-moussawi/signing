@@ -68,7 +68,7 @@ Currently Tested on FireFox 45, IE 11
 
 ```cs
 var toolkit = new Singing.Toolkit();
-byte[] file = new Signing.Util.File();
+var file = new Signing.Util.File();
 
 // Generate a Digest
 string digest = toolkit.Disgest(content);
