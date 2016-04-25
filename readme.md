@@ -1,6 +1,6 @@
 Digital Signing using 3SKey
 ===========================
-This repo contain a toolkit that help you sign files using the 3Skey USB token.
+This repo contains a toolkit that help you sign files using the 3Skey USB token.
 
 # Limitation
 The 3Skey token uses the Java Applet for Web Applications, hence it will not work on browsers that doesn't support Java Applet like Google Chrome.
