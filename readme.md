@@ -26,40 +26,62 @@ Currently Tested on FireFox 45, IE 11
     ```
 - Initialize it and Sign
 
-    ```js
-     var token = new Token3Skey(document.pdiApplet);
+```js
+    var token = new Token3Skey(document.pdiApplet);
 
-        window.appletInitialized = function(pSlots){            
-            
-            if(!pSlots) {
-                alert('No USB device found');   
-                return;         
-            }
-                        
-            token.setSlot(pSlots);
+    window.appletInitialized = function(pSlots){            
+        
+        if(!pSlots) {
+            alert('No USB device found');   
+            return;         
         }
-        
-        
-        // Sign example
-        $('#sign').click(function() {
-            var input = $('#input').val();            
-            token.sign(input, function(result) {
-                $('#result').html(result);
-            },function(err, code) {
-                    alert('Error ' + JSON.stringify({ err: err, code: code }));
-            });
+                    
+        token.setSlot(pSlots);
+    }
+    
+    
+    // Sign example
+    $('#sign').click(function() {
+        var input = $('#input').val();            
+        token.sign(input, function(result) {
+            $('#result').html(result);
+        },function(err, code) {
+                alert('Error ' + JSON.stringify({ err: err, code: code }));
         });
+    });
 
-        // Sign detached example
-        $('#signDetached').click(function() {
-            var input = $('#input').val();            
-            token.signDetach(input, function(result) {
-                $('#result').html(result);
-            },function(err, code) {
-                    alert('Error ' + JSON.stringify({ err: err, code: code }));
-                });
+    // Sign detached example
+    $('#signDetached').click(function() {
+        var input = $('#input').val();            
+        token.signDetach(input, function(result) {
+            $('#result').html(result);
+        },function(err, code) {
+                alert('Error ' + JSON.stringify({ err: err, code: code }));
+            });
+    });
+```
+
+## Multiple sign example (async signing inside a loop)
+
+```js
+
+var input = '.....',
+    separator = '@@',
+    digests = input.split(separator),
+    signatures = [];
+    
+for(var i = 0; i < digests.length; i++) {
+    (function(i){
+        token.signDetach(digests[i], function(signature){
+            signatures[i] = signature;
         });
-    ```
+    })(i);
+}
+
+console.log(signatures.join(separator));
+
+```
+
 
 # Server side setup
 - Add the Signing DLL as a reference in your project
