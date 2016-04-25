@@ -77,3 +77,6 @@ byte[] signature =  toolkit.Sign(new List<byte[]> { signature }, content);
 // Convert it to Base64
 string signatureB64 = toolkit.ToBase64Format(signature);
 ```
+
+# Examples 
+Check the `Web` and `DemoApp` for more examples
