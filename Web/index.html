@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script type="text/javascript" src="3skey.js"></script>
+    <title>Digital Signing Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        #input {
+            width: 100%;
+            height: 300px;
+        }
+        
+        #result {
+            color: #000;
+            background: #fafafa;
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <p></p>
+        <h2>Digital Signing Demo using the PDI applet</h2>
+        <small>FireFox, IE only</small>
+        <div id="console" class="alert alert-info">Checking ...</div>
+        <div class="row">
+            <div class="col-md-6">
+                <textarea id="input" placeholder="Enter the file content here or the HASH (in case of sign detach)"></textarea>
+                <small class="help-block">Enter the clear text file content, or the Hashed content if you want to use the Detached mode</small>
+            </div>
+            <div class="col-md-6">
+                <pre id="result"></pre>
+            </div>
+        </div>
+
+        <br>
+
+        <p>
+            <button class="btn btn-primary" id="sign">Sign</button>
+            <button class="btn btn-default" id="signDetached">Sign Detached</button>
+        </p>
+    </div>   
+
+    <div style="visibility:hidden">
+        <applet name="pdiApplet" code="com.swift.pdi.applet.TokenApplet" archive="pdiapplet.jar"> </applet>
+    </div>
+
+    <script>
+        var token = new Token3Skey(document.pdiApplet);
+
+        window.appletInitialized = function(pSlots){
+            token.setSlot(pSlots);
+            
+            if(pSlots) {
+                $('#console').removeClass().addClass('alert alert-success').html('Found a USB token device on port #' + pSlots);                
+            }else {
+                $('#console').removeClass().addClass('alert alert-warning').html('USB token device not found, plug it and refresh the page <kbd>ctrl + R</kbd>');                                
+            }            
+        }
+
+        $('#sign').click(function() {
+            var input = $('#input').val();            
+            token.sign(input, function(result) {
+                $('#result').html(result);
+            },function(err, code) {
+                    alert('Error ' + JSON.stringify({ err: err, code: code }));
+                });
+        });
+
+        $('#signDetached').click(function() {
+            var input = $('#input').val();            
+            token.signDetach(input, function(result) {
+                $('#result').html(result);
+            },function(err, code) {
+                    alert('Error ' + JSON.stringify({ err: err, code: code }));
+                });
+        });
+    </script>
+</body>
+
+</html>
