@@ -26,7 +26,7 @@ Currently Tested on FireFox 45, IE 11
     ```
 - Initialize it and Sign
 
-    ```html
+    ```js
      var token = new Token3Skey(document.pdiApplet);
 
         window.appletInitialized = function(pSlots){            
