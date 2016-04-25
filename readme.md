@@ -80,3 +80,6 @@ string signatureB64 = toolkit.ToBase64Format(signature);
 
 # Examples 
 Check the `Web` and `DemoApp` for more examples
+
+# Copyright
+All copyright are reserved for Box & Automation Solutions
