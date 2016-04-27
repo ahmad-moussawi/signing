@@ -17,11 +17,12 @@
     }
 
     /**
-     * Generate a PKCS7 Attached signature (the file content will be embeded in the signature)
+     * Generate a PKCS7 Attached signature (the file content will be embedded in the signature)
      * 
-     * @param string the clear text file
-     * @onSuccess function a callback with the following signature `function (response): void`
-     * @onError function a fallback `function (err: string, code: string): void`
+     * @param file string the clear text file
+     * @param onSuccess function a callback with the following signature `function (response): void`
+     * @param onError function a fallback `function (err: string, code: string): void`
+     * @param withHeaderAndFooter bool Whether to include the "-----BEGIN PKCS7-----" and "-----END PKCS7-----" header and footer
      * 
      */
     Token3Skey.prototype.sign = function (content, onSuccess, onFailure, withHeaderAndFooter) {
@@ -34,12 +35,12 @@
     }
 
     /**
-     * Generate a PKCS7 Detach signature (the file content will not be embeded in the signature)
+     * Generate a PKCS7 Detach signature (the file content will NOT be embedded in the signature)
      * 
      * @param string digest the hash of the file
-     * @onSuccess function a callback with the following signature `function (response): void`
-     * @onError function a fallback `function (err: string, code: string): void`
-     * 
+     * @parma onSuccess function a callback with the following signature `function (response): void`
+     * @parma onError function a fallback `function (err: string, code: string): void`
+     * @param withHeaderAndFooter bool Whether to include the "-----BEGIN PKCS7-----" and "-----END PKCS7-----" header and footer
      */
     Token3Skey.prototype.signDetach = function (digest, onSuccess, onFailure, withHeaderAndFooter) {
         return this.applet.signDetachSignature(this.slot, digest, {
@@ -49,7 +50,13 @@
             onFailure: onFailure
         });
     }
-
+    
+    /**
+     * Clear the token current session
+     * 
+     * @parma onSuccess function a callback with the following signature `function (response): void`
+     * @parma onError function a fallback `function (err: string, code: string): void`
+     */
     Token3Skey.prototype.logout = function (onSuccess, onFailure) {
         return this.applet.logout(this.slot, {
             onSuccess: onSuccess,

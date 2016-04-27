@@ -74,13 +74,48 @@ for(var i = 0; i < digests.length; i++) {
     (function(i){
         token.signDetach(digests[i], function(signature){
             signatures[i] = signature;
+            
+            if(i === digests.length - 1) {
+                // done
+                console.log(signatures.join(separator));                
+            }
+            
         });
     })(i);
 }
 
-console.log(signatures.join(separator));
 
 ```
+
+# JavaScript Api
+
+**sign**
+Generate a PKCS7 Attached signature (the file content will be embeded in the signature)
+
+Param  | Type | Description
+-------| -----| -----------
+content| string| The clear text file
+onSuccess| function | a success callback function with the following signature `function(response: string)`
+onFailure| function |an error callback function with the following signature `function(err: string, code: string)`
+withHeaderAndFooter| bool | Whether to include the "-----BEGIN PKCS7-----" and "-----END PKCS7-----" header and footer
+
+**signDetach**
+Generate a PKCS7 Detach signature (the file content will not be embeded in the signature)
+
+Param  | Type | Description
+-------| -----| -----------
+digest| string| The hash of the file
+onSuccess| function | a success callback function with the following signature `function(response: string)`
+onFailure| function |an error callback function with the following signature `function(err: string, code: string)`
+withHeaderAndFooter| bool | Whether to include the "-----BEGIN PKCS7-----" and "-----END PKCS7-----" header and footer
+
+**logout**
+Clear the token current session
+
+Param  | Type | Description
+-------| -----| -----------
+onSuccess| function | a success callback function with the following signature `function(response: string)`
+onFailure| function |an error callback function with the following signature `function(err: string, code: string)`
 
 
 # Server side setup
