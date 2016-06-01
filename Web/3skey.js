@@ -5,56 +5,68 @@
  *  @author Ahmad Moussawi <ahmad.moussawi@treasuryxpress.com>
  * 
  */
-; (function(global) {
+; (function (global) {
     function Token3Skey(applet) {
         this.applet = applet;
         this.slot = null;
     }
 
-    Token3Skey.prototype.setSlot = function(slot) {
+    Token3Skey.prototype.setSlot = function (slot) {
         this.slot = slot;
         return this;
     }
-    
+
     /**
-     * Generate a PKCS7 Attached signature (the file content will be embeded in the signature)
+     * Generate a PKCS7 Attached signature (the file content will be embedded in the signature)
      * 
-     * @param string the clear text file
-     * @onSuccess function a callback with the following signature `function (response): void`
-     * @onError function a fallback `function (err: string, code: string): void`
+     * @param file string the clear text file
+     * @param onSuccess function a callback with the following signature `function (response): void`
+     * @param onError function a fallback `function (err: string, code: string): void`
+     * @param withHeaderAndFooter bool Whether to include the "-----BEGIN PKCS7-----" and "-----END PKCS7-----" header and footer
      * 
      */
-    Token3Skey.prototype.sign = function(content, onSuccess, onFailure) {
+    Token3Skey.prototype.sign = function (content, onSuccess, onFailure, withHeaderAndFooter) {
         return this.applet.sign(this.slot, content, {
-            onSuccess: function(response) {
-                onSuccess(["-----BEGIN PKCS7-----", response, "-----END PKCS7-----"].join('\n'));
-            },
-            onFailure: onFailure
-        });
-    }
-    
-    /**
-     * Generate a PKCS7 Detach signature (the file content will not be embeded in the signature)
-     * 
-     * @param string digest the hash of the file
-     * @onSuccess function a callback with the following signature `function (response): void`
-     * @onError function a fallback `function (err: string, code: string): void`
-     * 
-     */
-    Token3Skey.prototype.signDetach = function(digest, onSuccess, onFailure) {
-        return this.applet.signDetachSignature(this.slot, digest, {
-            onSuccess: function(response) {
-                onSuccess(["-----BEGIN PKCS7-----", response, "-----END PKCS7-----"].join('\n'));
+            onSuccess: function (response) {
+                onSuccess(!!withHeaderAndFooter ? attachHeaderAndFooter(response) : response);
             },
             onFailure: onFailure
         });
     }
 
-    Token3Skey.prototype.logout = function(onSuccess, onFailure) {
+    /**
+     * Generate a PKCS7 Detach signature (the file content will NOT be embedded in the signature)
+     * 
+     * @param string digest the hash of the file
+     * @parma onSuccess function a callback with the following signature `function (response): void`
+     * @parma onError function a fallback `function (err: string, code: string): void`
+     * @param withHeaderAndFooter bool Whether to include the "-----BEGIN PKCS7-----" and "-----END PKCS7-----" header and footer
+     */
+    Token3Skey.prototype.signDetach = function (digest, onSuccess, onFailure, withHeaderAndFooter) {
+        return this.applet.signDetachSignature(this.slot, digest, {
+            onSuccess: function (response) {
+                onSuccess(!!withHeaderAndFooter ? attachHeaderAndFooter(response) : response);
+            },
+            onFailure: onFailure
+        });
+    }
+    
+    /**
+     * Clear the token current session
+     * 
+     * @parma onSuccess function a callback with the following signature `function (response): void`
+     * @parma onError function a fallback `function (err: string, code: string): void`
+     */
+    Token3Skey.prototype.logout = function (onSuccess, onFailure) {
         return this.applet.logout(this.slot, {
             onSuccess: onSuccess,
             onFailure: onFailure
         })
     }
+
+    function attachHeaderAndFooter(content) {
+        return ["-----BEGIN PKCS7-----", content, "-----END PKCS7-----"].join('\n');
+    }
+
     global.Token3Skey = Token3Skey;
 })(window);
