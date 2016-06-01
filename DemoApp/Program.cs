@@ -32,8 +32,8 @@ namespace DemoApp
             Console.WriteLine("Signing the file ...");
             var signed = toolkit.Sign(new List<byte[]> { signature }, content);
 
-            file.Write(Path.Combine(workingDir, "signed.bin"), signed);
-            file.WriteText(Path.Combine(workingDir, "signed.b64"), toolkit.ToBase64Format(signed));
+            file.Write(Path.Combine(workingDir, "signed.p7s"), signed);
+            file.WriteText(Path.Combine(workingDir, "signed.p7b"), toolkit.ToBase64Format(signed));
 
             Console.WriteLine("Done. Press any key to exit");
             Console.ReadLine();

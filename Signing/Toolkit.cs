@@ -4,6 +4,8 @@ using Org.BouncyCastle.Cms;
 using System.Collections.Generic;
 using Org.BouncyCastle.Crypto.Digests;
 using System.Text;
+using Org.BouncyCastle.X509.Store;
+using Org.BouncyCastle.X509;
 
 namespace Signing
 {
@@ -23,18 +25,20 @@ namespace Signing
         /// <param name="payload">The clear text file content</param>
         /// <returns>Attached PCKS7 signature</returns>
         public byte[] Sign(List<byte[]> signatures, byte[] payload)
-        {
+        {            
+
             CmsSignedDataGenerator generator = new CmsSignedDataGenerator();
 
             var signersInfos = signatures
-                .Select(x => new CmsSignedDataParser(x))
-                .Select(x => x.GetSignerInfos());
+                .Select(x => new CmsSignedDataParser(x));
 
             foreach (var item in signersInfos)
             {
-                generator.AddSigners(item);
+                var cert = item.GetCertificates("Collection");
+                generator.AddCertificates(cert);                
+                generator.AddSigners(item.GetSignerInfos());
             }
-
+                        
             var signed = generator.Generate(CmsSignedGenerator.Data, new CmsProcessableByteArray(payload), true);
 
             return signed.ContentInfo.GetDerEncoded();
