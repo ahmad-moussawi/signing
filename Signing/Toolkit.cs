@@ -4,8 +4,6 @@ using Org.BouncyCastle.Cms;
 using System.Collections.Generic;
 using Org.BouncyCastle.Crypto.Digests;
 using System.Text;
-using Org.BouncyCastle.X509.Store;
-using Org.BouncyCastle.X509;
 
 namespace Signing
 {
@@ -20,11 +18,11 @@ namespace Signing
 
         /// <summary>
         /// Generate an Attached Signature, the file content will be embedded in the signature without encryption
-        /// </summary>
-        /// <param name="signatures">The list of detached PCKS7 signatures</param>
+        /// </summary>        
         /// <param name="payload">The clear text file content</param>
+        /// <param name="signatures">The list of detached PCKS7 signatures</param>
         /// <returns>Attached PCKS7 signature</returns>
-        public byte[] Sign(List<byte[]> signatures, byte[] payload)
+        public byte[] Sign(byte[] payload, List<byte[]> signatures)
         {            
 
             CmsSignedDataGenerator generator = new CmsSignedDataGenerator();
@@ -69,7 +67,7 @@ namespace Signing
         /// </summary>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public string Disgest(byte[] bytes)
+        public string Digest(byte[] bytes)
         {
             Sha256Digest engine = new Sha256Digest();
             engine.BlockUpdate(bytes, 0, bytes.Length);
@@ -87,7 +85,7 @@ namespace Signing
         /// <returns></returns>
         public string Digest(string content)
         {
-            return Disgest(Encoding.UTF8.GetBytes(content));
+            return Digest(Encoding.UTF8.GetBytes(content));
         }
 
     }

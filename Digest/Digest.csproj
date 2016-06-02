@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2CD35711-55E8-4925-A2BE-EB735671146B}</ProjectGuid>
+    <ProjectGuid>{D298C5DF-2D29-46CA-837B-C67A15066885}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DemoApp</RootNamespace>
-    <AssemblyName>DemoApp</AssemblyName>
+    <RootNamespace>Digest</RootNamespace>
+    <AssemblyName>Digest</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,11 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="sample\signature.b64" />
-    <None Include="sample\signature.p7s" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="sample\file.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Signing\Signing.csproj">
