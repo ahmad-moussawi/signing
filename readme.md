@@ -141,7 +141,7 @@ string signatureB64 = toolkit.ToBase64Format(signature);
 [extracted from this link](https://myonlineusb.wordpress.com/2011/06/19/how-to-convert-certificates-between-pem-der-p7bpkcs7-pfxpkcs12/)
 
 ### PEM Format
-It is the most common format that Certificate Authorities issue certificates in. It contains the ‘—–BEGIN CERTIFICATE—–” and “—–END CERTIFICATE—–” statements.
+It is the most common format that Certificate Authorities issue certificates in. It contains the `—–BEGIN CERTIFICATE—–` and `—–END CERTIFICATE—–` statements.
 
 Several PEM certificates and even the Private key can be included in one file, one below the other. But most platforms(eg:- Apache) expects the certificates and Private key to be in separate files.
  - They are Base64 encoded ACII files
@@ -155,7 +155,7 @@ It is a Binary form of ASCII PEM format certificate. All types of Certificates &
  - DER is typically used in Java platform
 
 ### P7B/PKCS#7
-They contain “—–BEGIN PKCS—–” & “—–END PKCS7—–” statements. It can contain only Certificates & Chain certificates but not the Private key.
+They contain `—–BEGIN PKCS—–` & `—–END PKCS7—–` statements. It can contain only Certificates & Chain certificates but not the Private key.
  - They are Base64 encoded ASCII files
  - They have extensions .p7b, .p7c
  - Several platforms supports it. eg:- Windows OS, Java Tomcat
