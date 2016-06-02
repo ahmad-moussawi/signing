@@ -127,18 +127,52 @@ onFailure| function |an error callback function with the following signature `fu
 var toolkit = new Singing.Toolkit();
 var file = new Signing.Util.File();
 
-// Generate a Digest
+// Generate a SHA1-256 Digest
 string digest = toolkit.Disgest(content);
 
 // Generate a PCKS7 Attached Signature
-byte[] signature =  toolkit.Sign(new List<byte[]> { signature }, content);
+byte[] signature =  toolkit.Sign(content, new List<byte[]> { signature });
 
 // Convert it to Base64
 string signatureB64 = toolkit.ToBase64Format(signature);
 ```
 
+# Note about certifications
+[extracted from this link](https://myonlineusb.wordpress.com/2011/06/19/how-to-convert-certificates-between-pem-der-p7bpkcs7-pfxpkcs12/)
+
+### PEM Format
+It is the most common format that Certificate Authorities issue certificates in. It contains the ‘—–BEGIN CERTIFICATE—–” and “—–END CERTIFICATE—–” statements.
+
+Several PEM certificates and even the Private key can be included in one file, one below the other. But most platforms(eg:- Apache) expects the certificates and Private key to be in separate files.
+ - They are Base64 encoded ACII files
+ - They have extensions such as .pem, .crt, .cer, .key
+ - Apache and similar servers uses PEM format certificates
+
+### DER Format
+It is a Binary form of ASCII PEM format certificate. All types of Certificates & Private Keys can be encoded in DER format
+ - They are Binary format files
+ - They have extensions .cer & .der
+ - DER is typically used in Java platform
+
+### P7B/PKCS#7
+They contain “—–BEGIN PKCS—–” & “—–END PKCS7—–” statements. It can contain only Certificates & Chain certificates but not the Private key.
+ - They are Base64 encoded ASCII files
+ - They have extensions .p7b, .p7c
+ - Several platforms supports it. eg:- Windows OS, Java Tomcat
+
+### PFX/PKCS#12
+They are used for storing the Server certificate, any Intermediate certificates & Private key in one encryptable file.
+ - They are Binary format files
+ - They have extensions .pfx, .p12
+ - Typically used on Windows OS to import and export certificates and Private keys
+ 
+### Difference between `p7s` and `p7m`
+
+the `p7m` contains the signature in addition to the file content, where `p7s` contains only the signature without the file content (detached mode)
+
+
 # Examples 
-Check the `Web` and `DemoApp` for more examples
+Check the `Web`, `Cosign` and `Digest` projects for more examples
 
 # Copyright
 All copyright are reserved for Box & Automation Solutions
